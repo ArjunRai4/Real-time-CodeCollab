@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import PageLoader from '../components/PageLoader';
 
 const Signup = () => {
 
@@ -46,6 +47,8 @@ const Signup = () => {
     }
   };
 
+  if (loading) return <PageLoader />;
+
   return (
     
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
@@ -88,7 +91,8 @@ const Signup = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
+            disabled={loading}
+            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50"
           >
             Sign Up
           </button>
@@ -96,7 +100,7 @@ const Signup = () => {
 
         <p className="text-center text-sm text-gray-600 mt-4">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-600 hover:underline">
+          <Link to="/api/user/login" className="text-blue-600 hover:underline">
             Log in
           </Link>
         </p>

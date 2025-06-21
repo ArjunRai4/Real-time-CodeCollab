@@ -3,6 +3,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
+import CreateRoom from "./pages/CreateRoom";
 
 function App() {
   return (
@@ -14,6 +15,14 @@ function App() {
             <Dashboard/>
           </ProtectedRoute>
         } />
+        <Route
+          path="/create-room"
+          element={
+            <ProtectedRoute>
+              <CreateRoom />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
   );
 }

@@ -9,8 +9,8 @@ router.post("/login",login);
 
 router.post("/logout",logout);
 
-router.get("/me",auth,(req,res)=>{
-    res.status(200).json({user:req.user});
+router.get("/me",auth,async(req,res)=>{
+    res.status(200).json({success:true,user:req.user});
 });
 
 module.exports=router;

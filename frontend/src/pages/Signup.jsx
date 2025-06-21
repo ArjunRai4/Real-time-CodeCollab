@@ -3,8 +3,11 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import PageLoader from '../components/PageLoader';
+import { useAuth } from '../context/AuthContext';
 
 const Signup = () => {
+
+  const {setUser}=useAuth();
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -36,6 +39,7 @@ const Signup = () => {
       );
 
       if (res.data.success) {
+        setUser(res.data.user);
         navigate("/dashboard");
       }
     } catch (err) {

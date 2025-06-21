@@ -75,11 +75,15 @@ async function login(req,res){
         res.cookie("jwt",token,{
             maxAge:7*24*60*60*1000,
             httpOnly:true,  //prevents XSS attacks,
-            sameSite:"Strict",  //prevents CSRF attacks
+            sameSite:"Lax",  //prevents CSRF attacks
             secure:process.env.NODE_ENV==="production"
         })
 
-        res.status(200).json({success:true,user})
+        res.status(200).json({success:true,user:{
+            _id:user._id,
+            username:user.username,
+            email:user.email,
+        }})
     } catch (error) {
         console.log("Error in login controller",error);
         return res.status(500).json({ message: "Server error", error: error.message });

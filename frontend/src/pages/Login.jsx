@@ -2,8 +2,11 @@ import React, { useState } from 'react'
 import { useNavigate,Link } from 'react-router-dom'
 import PageLoader from '../components/PageLoader';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
+
 
 const Login = () => {
+    const { setUser } = useAuth();
     const navigate=useNavigate();
 
     const[formData,setFormData]=useState({
@@ -34,6 +37,7 @@ const Login = () => {
         );
 
         if (res.data.success) {
+            setUser(res.data.user);
             navigate("/dashboard");
         }
         } catch (err) {

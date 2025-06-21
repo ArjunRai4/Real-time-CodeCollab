@@ -72,7 +72,7 @@ async function joinRoom(req,res){
         );
         if(!alreadyParticipant){
             room.participants.push({user:userId});
-            await Room.save();
+            await room.save();
         }
         return res.status(200).json({
             success: true,
@@ -164,6 +164,8 @@ async function getUserRooms(req, res) {
   try {
     const userId = req.user._id;
 
+    console.log("👀 Looking for rooms where:", userId);
+
     const rooms = await Room.find({
       $or: [
         { owner: userId },
@@ -171,7 +173,7 @@ async function getUserRooms(req, res) {
       ]
     })
     .sort({ updatedAt: -1 }) // most recently updated first
-    .select("roomName roomId language isPrivate owner createdAt");
+    .select("_id roomName roomId language isPrivate owner createdAt");
 
     res.status(200).json({
       success: true,

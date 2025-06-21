@@ -13,7 +13,7 @@ export function AuthProvider({children}){
     useEffect(()=>{
         async function fetchUser(){
             try {
-                const res=await axios.get("http:localhost:4000/api/user/me",{
+                const res=await axios.get("http://localhost:4000/api/user/me",{
                     withCredentials:true,
                 })
                 if(res.data.success) setUser(res.data.user);

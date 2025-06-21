@@ -7,8 +7,10 @@ router.post("/create",auth,createRoom);
 router.post("/join",auth,joinRoom);
 router.post("/leave",auth,leaveRoom);
 
-router.get("/:roomId",auth,getRoomDetails);
-router.get("/my-rooms", auth, getUserRooms);
+router.get("/my-rooms", auth,(req,res)=>{
+    getUserRooms(req,res);
+})
 router.put("/save-code", auth, saveCode);
+router.get("/:roomId",auth,getRoomDetails);
 
 module.exports=router;

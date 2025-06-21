@@ -31,4 +31,4 @@ const chatWithAI=async(req,res)=>{
     }
 }
 
-module.exports={};
+module.exports={chatWithAI};

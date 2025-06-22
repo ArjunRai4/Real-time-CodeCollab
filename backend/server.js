@@ -15,6 +15,13 @@ dotenv.config();
 
 const app=express();
 const PORT=process.env.PORT
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    credentials: true,
+  },
+});
 
 app.use(cors({
     origin: "http://localhost:5173", // Replace with your frontend URL
@@ -27,7 +34,61 @@ app.use("/api/user",userRoutes);
 app.use("/api/room",roomRoutes);
 app.use("/api/ai", aiRoutes);
 
-app.listen(PORT,()=>{
+const onlineUsersInRoom = {};
+
+io.on("connection", (socket) => {
+  console.log("Socket connected:", socket.id);
+
+  socket.on("join-room", (roomId) => {
+    socket.join(roomId);
+    if (!onlineUsersInRoom[roomId]) {
+      onlineUsersInRoom[roomId] = [];
+    }
+
+    // Avoid duplicates
+    const alreadyJoined = onlineUsersInRoom[roomId].some(
+      (u) => u._id === user._id
+    );
+
+    if (!alreadyJoined) {
+      onlineUsersInRoom[roomId].push(user);
+    }
+
+    io.to(roomId).emit("room-users", onlineUsersInRoom[roomId]);    
+  });
+
+    socket.on("leave-room", ({ roomId, userId }) => {
+    if (onlineUsersInRoom[roomId]) {
+      onlineUsersInRoom[roomId] = onlineUsersInRoom[roomId].filter(
+        (u) => u._id !== userId
+      );
+    }
+
+    socket.leave(roomId);
+    io.to(roomId).emit("room-users", onlineUsersInRoom[roomId]);
+  });
+
+  socket.on("disconnecting", () => {
+    for (const roomId of socket.rooms) {
+      if (onlineUsersInRoom[roomId]) {
+        onlineUsersInRoom[roomId] = onlineUsersInRoom[roomId].filter(
+          (u) => u.socketId !== socket.id
+        );
+        io.to(roomId).emit("room-users", onlineUsersInRoom[roomId]);
+      }
+    }
+  });
+
+  socket.on("code-change", ({ roomId, code }) => {
+    socket.to(roomId).emit("code-update", code); // send to everyone else
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Socket disconnected:", socket.id);
+  });
+});
+
+server.listen(PORT,()=>{
     console.log(`Server is running on PORT:${PORT}`);
     connectDB();
 })

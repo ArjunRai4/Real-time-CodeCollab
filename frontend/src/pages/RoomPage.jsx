@@ -9,6 +9,7 @@ import AiSidebar from "../components/AiSidebar";
 import { Bot } from "lucide-react";
 import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
+import RoomSidebar from "../components/RoomSidebar";
 
 const RoomPage = () => {
 
@@ -72,17 +73,26 @@ const RoomPage = () => {
     <div className="p-4 min-h-screen bg-gray-100">
       <h2 className="text-xl font-bold mb-4">{room.roomName}</h2>
       <p className="mb-2 text-sm text-gray-500">Language: {room.language}</p>
-      <CodeEditor language={room.language} value={code} onChange={setCode} />
-      <button
-        className="fixed bottom-4 right-4 bg-purple-600 text-white p-3 rounded-full hover:bg-purple-700 shadow-xl z-50"
-        onClick={() => setAiOpen(true)}
-        >
-        <Bot />
-      </button>
+      <div className="flex-1 overflow-hidden flex">
+        <RoomSidebar participants={participants} />
+  
+        <div className="flex-1 overflow-hidden">
+            <CodeEditor language={room.language} value={code} onChange={setCode} />
+            <button
+                className="fixed bottom-4 right-4 bg-purple-600 text-white p-3 rounded-full hover:bg-purple-700 shadow-xl z-50"
+                onClick={() => setAiOpen(true)}
+            >
+            <Bot />
+            </button>
 
-      {aiOpen && <AiSidebar onClose={() => setAiOpen(false)} />}
+            {aiOpen && <AiSidebar onClose={() => setAiOpen(false)} />}
+        </div>
+      </div>
     </div>
   )
 }
 
 export default RoomPage
+
+
+

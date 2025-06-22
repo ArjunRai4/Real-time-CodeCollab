@@ -3,11 +3,13 @@ import { useAuth } from '../context/AuthContext'
 import axios from 'axios';
 import PageLoader from '../components/PageLoader';
 import { Link } from 'react-router-dom';
+import JoinRoom from "../components/JoinRoom";
 
 const Dashboard = () => {
     const {user}=useAuth();
     const [rooms,setRooms]=useState([]);
     const [loading,setLoading]=useState(true);
+    const [showJoinModal, setShowJoinModal] = useState(false);
 
     useEffect(()=>{
         async function fetchRooms(){
@@ -35,12 +37,20 @@ const Dashboard = () => {
 
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Your Rooms</h2>
-        <Link
-          to="/create-room"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-        >
-          + Create Room
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link
+            to="/create-room"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          >
+            + Create Room
+          </Link>
+
+          <button className="bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 btn btn-outline" onClick={() => setShowJoinModal(true)}>
+            🔗 Join Room
+          </button>
+        </div>
+        {showJoinModal && <JoinRoom onClose={() => setShowJoinModal(false)} />}
+
       </div>
 
       {rooms.length === 0 ? (

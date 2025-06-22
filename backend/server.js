@@ -9,6 +9,7 @@ const connectDB = require("./config/db.connection");
 
 const userRoutes=require('./routes/user.route');
 const roomRoutes=require('./routes/room.route');
+const aiRoutes = require("./routes/ai.route");
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 
 app.use("/api/user",userRoutes);
 app.use("/api/room",roomRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.listen(PORT,()=>{
     console.log(`Server is running on PORT:${PORT}`);

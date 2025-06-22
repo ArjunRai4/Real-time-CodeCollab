@@ -5,6 +5,8 @@ import PageLoader from '../components/PageLoader';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import CodeEditor from '../components/CodeEditor';
+import AiSidebar from "../components/AiSidebar";
+import { Bot } from "lucide-react";
 
 const RoomPage = () => {
 
@@ -12,6 +14,7 @@ const RoomPage = () => {
     const [room,setRoom]=useState(null);
     const [loading,setLoading]=useState(true);
     const [code, setCode] = useState("");
+    const [aiOpen, setAiOpen] = useState(false);
 
     useEffect(()=>{
         async function fetchRoom(){
@@ -37,6 +40,14 @@ const RoomPage = () => {
       <h2 className="text-xl font-bold mb-4">{room.roomName}</h2>
       <p className="mb-2 text-sm text-gray-500">Language: {room.language}</p>
       <CodeEditor language={room.language} code={code} setCode={setCode} />
+      <button
+        className="fixed bottom-4 right-4 bg-purple-600 text-white p-3 rounded-full hover:bg-purple-700 shadow-xl z-50"
+        onClick={() => setAiOpen(true)}
+        >
+        <Bot />
+      </button>
+
+      {aiOpen && <AiSidebar onClose={() => setAiOpen(false)} />}
     </div>
   )
 }

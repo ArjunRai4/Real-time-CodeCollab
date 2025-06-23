@@ -20,6 +20,24 @@ const RoomPage = () => {
   const socket = useSocket();
   const [participants, setParticipants] = useState([]);
 
+  const saveCodeToServer=async()=>{
+    try {
+        await axios.patch(`http://localhost:4000/api/room/${roomId}/save`,
+            {code},
+            {withCredentials:true}
+        )
+    } catch (error) {
+        console.error("Auto-save failed",error);
+    }
+  }
+  useEffect(()=>{
+    const interval=setInterval(()=>{
+        if(code) saveCodeToServer();
+    },1000);
+
+    return ()=>clearInterval(interval);
+  },[code]);
+
   useEffect(() => {
     async function fetchRoom() {
       try {

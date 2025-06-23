@@ -218,5 +218,25 @@ async function saveCode(req, res) {
   }
 }
 
+async function saveRoomCode(req,res){
+    try {
+        const {roomId}=req.params;
+        const {code}=req.body;
 
-module.exports = { createRoom,joinRoom,leaveRoom,getRoomDetails,getUserRooms,saveCode };
+        if(!code) return res.status(400).json({ message: "Code is required" });
+
+        const room=await Room.findOne({roomId});
+        if (!room) return res.status(404).json({ message: "Room not found" });
+
+        room.code=code;
+        await room.save();
+
+        res.status(200).json({ success: true, message: "Code saved" });
+    } catch (error) {
+        console.error("Save code error:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
+
+module.exports = { createRoom,joinRoom,leaveRoom,getRoomDetails,getUserRooms,saveCode,saveRoomCode };

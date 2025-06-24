@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { X, Send } from "lucide-react";
+import axiosInstance from "../lib/axios";
 
 const AiSidebar = ({ onClose }) => {
   const [chat, setChat] = useState([]);
@@ -15,8 +16,8 @@ const AiSidebar = ({ onClose }) => {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        "http://localhost:4000/api/ai/chat",
+      const res = await axiosInstance.post(
+        "/api/ai/chat",
         { message: input },
         { withCredentials: true }
       );

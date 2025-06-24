@@ -1,6 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../lib/axios";
 
 const RoomSidebar = ({ participants, room, user }) => {
   const roomId = room.roomId;
@@ -8,8 +9,8 @@ const RoomSidebar = ({ participants, room, user }) => {
 
   const handleLeaveRoom = async () => {
     try {
-      await axios.post(
-        "http://localhost:4000/api/room/leave",
+      await axiosInstance.post(
+        "/api/room/leave",
         { roomId },
         { withCredentials: true }
       );
@@ -21,8 +22,8 @@ const RoomSidebar = ({ participants, room, user }) => {
 
   const handleCloseRoom = async () => {
     try {
-      await axios.post(
-        "http://localhost:4000/api/room/close",
+      await axiosInstance.post(
+        "/api/room/close",
         { roomId },
         { withCredentials: true }
       );

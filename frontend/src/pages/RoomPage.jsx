@@ -10,10 +10,9 @@ import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
 import { toast } from 'react-hot-toast';
 import VideoPanel from '../components/VideoPanel';
-import { useNavigate } from "react-router-dom";
+import axiosInstance from '../lib/axios';
 
-const RoomPage = () => {
-  const navigate = useNavigate();  
+const RoomPage = () => {  
   const { roomId } = useParams();
   const [room, setRoom] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,7 +24,7 @@ const RoomPage = () => {
 
   const saveCodeToServer=async()=>{
     try {
-        await axios.patch(`http://localhost:4000/api/room/${roomId}/save`,
+        await axiosInstance.patch(`/api/room/${roomId}/save`,
             {code},
             {withCredentials:true}
         )
@@ -44,7 +43,7 @@ const RoomPage = () => {
   useEffect(() => {
     async function fetchRoom() {
       try {
-        const res = await axios.get(`http://localhost:4000/api/room/${roomId}`, {
+        const res = await axiosInstance.get(`/api/room/${roomId}`, {
           withCredentials: true,
         });
         setRoom(res.data.room);

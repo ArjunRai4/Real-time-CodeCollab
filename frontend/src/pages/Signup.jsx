@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import PageLoader from '../components/PageLoader';
 import { useAuth } from '../context/AuthContext';
+import axiosInstance from '../lib/axios';
 
 const Signup = () => {
 
@@ -32,8 +33,8 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        "http://localhost:4000/api/user/signup",
+      const res = await axiosInstance.post(
+        "/api/user/signup",
         formData,
         { withCredentials: true }
       );

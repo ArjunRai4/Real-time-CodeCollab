@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import PageLoader from "../components/PageLoader";
 import axios from "axios";
+import axiosInstance from "../lib/axios";
 
 const AuthContext=createContext();
 
@@ -13,7 +14,7 @@ export function AuthProvider({children}){
     useEffect(()=>{
         async function fetchUser(){
             try {
-                const res=await axios.get("http://localhost:4000/api/user/me",{
+                const res=await axiosInstance.get("/api/user/me",{
                     withCredentials:true,
                 })
                 if(res.data.success) setUser(res.data.user);

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import PageLoader from '../components/PageLoader';
 import axios from 'axios';
 import toast from "react-hot-toast";
+import axiosInstance from '../lib/axios';
 
 const CreateRoom = () => {
 
@@ -19,8 +20,8 @@ const CreateRoom = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const res = await axios.post(
-                "http://localhost:4000/api/room/create",
+            const res = await axiosInstance.post(
+                "/api/room/create",
                 {
                     roomName,
                     language,

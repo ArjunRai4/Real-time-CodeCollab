@@ -4,6 +4,7 @@ import axios from 'axios';
 import PageLoader from '../components/PageLoader';
 import { Link } from 'react-router-dom';
 import JoinRoom from "../components/JoinRoom";
+import axiosInstance from '../lib/axios';
 
 const Dashboard = () => {
     const {user}=useAuth();
@@ -14,7 +15,7 @@ const Dashboard = () => {
     useEffect(()=>{
         async function fetchRooms(){
             try {
-                const res=await axios.get("http://localhost:4000/api/room/my-rooms",{
+                const res=await axiosInstance.get("/api/room/my-rooms",{
                     withCredentials:true,
                 });
                 setRooms(res.data.rooms);

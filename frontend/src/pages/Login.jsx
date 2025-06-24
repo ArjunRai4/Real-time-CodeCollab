@@ -3,6 +3,7 @@ import { useNavigate,Link } from 'react-router-dom'
 import PageLoader from '../components/PageLoader';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import axiosInstance from '../lib/axios';
 
 
 const Login = () => {
@@ -30,8 +31,8 @@ const Login = () => {
         setLoading(true);
 
         try {
-        const res = await axios.post(
-            "http://localhost:4000/api/user/login",
+        const res = await axiosInstance.post(
+            "/api/user/login",
             formData,
             { withCredentials: true }
         );

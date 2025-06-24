@@ -61,7 +61,7 @@ const Dashboard = () => {
           {rooms.map((room) => (
             <Link
               key={room._id}
-              to={`/api/room/${room.roomId}`}
+              to={`/room/${room.roomId}`}
               className="bg-white p-4 rounded-xl shadow hover:shadow-md transition"
             >
               <h3 className="text-lg font-bold">{room.roomName}</h3>

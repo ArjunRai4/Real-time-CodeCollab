@@ -18,7 +18,7 @@ const app=express();
 const PORT=process.env.PORT
 
 app.use(cors({
-    origin: "http://localhost:5173", // Replace with your frontend URL
+    origin: "https://codecollab-eight.vercel.app", // Replace with your frontend URL
     credentials: true, // This allows cookies to be sent with requests
 }));
 app.use(express.json());
@@ -31,7 +31,7 @@ app.use("/api/ai", aiRoutes);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Replace with your frontend URL
+    origin: "https://codecollab-eight.vercel.app", // Replace with your frontend URL
     methods: ["GET", "POST"],
     credentials: true,
   },

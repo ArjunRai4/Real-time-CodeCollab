@@ -17,7 +17,7 @@ const JoinRoomModal = ({ onClose }) => {
 
     try {
       const res = await axiosInstance.post(
-        "/api/room/join",
+        "/room/join",
         { roomId, password },
         { withCredentials: true }
       );

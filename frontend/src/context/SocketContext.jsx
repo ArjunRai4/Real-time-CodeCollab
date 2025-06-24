@@ -14,7 +14,10 @@ const useProvideSocket = () => {
   const userId = useRef(null);
 
   useEffect(() => {
-    const socket = io(import.meta.env.VITE_BACKEND_URL, { withCredentials: true });
+    const socket = io("http://localhost:4000", { 
+      transports: ['websocket'],  
+      withCredentials: true 
+    });
     socketRef.current = socket;
 
     socket.on("connect", () => {

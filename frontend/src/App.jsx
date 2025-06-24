@@ -9,6 +9,14 @@ import RoomPage from "./pages/RoomPage";
 function App() {
   return (
       <Routes>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={
@@ -32,6 +40,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
   );
 }

@@ -1,10 +1,11 @@
-const express=require("express");
+const express=require('express');
 const http=require("http");
 const dotenv=require("dotenv");
 const cookieParser=require("cookie-parser");
 
 const {Server}=require("socket.io");
 const cors=require("cors");
+const path=require("path");
 const connectDB = require("./config/db.connection");
 
 const userRoutes=require('./routes/user.route');
@@ -15,16 +16,9 @@ dotenv.config();
 
 const app=express();
 const PORT=process.env.PORT
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "https://685a589fd86235419460ef9e--shiny-tiramisu-7e68c8.netlify.app",
-    credentials: true,
-  },
-});
 
 app.use(cors({
-    origin: "https://685a589fd86235419460ef9e--shiny-tiramisu-7e68c8.netlify.app", // Replace with your frontend URL
+    origin: "http://localhost:5173", // Replace with your frontend URL
     credentials: true, // This allows cookies to be sent with requests
 }));
 app.use(express.json());
@@ -33,6 +27,15 @@ app.use(cookieParser());
 app.use("/api/user",userRoutes);
 app.use("/api/room",roomRoutes);
 app.use("/api/ai", aiRoutes);
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173", // Replace with your frontend URL
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
 
 const onlineUsersInRoom = {};
 
@@ -91,6 +94,19 @@ io.on("connection", (socket) => {
     console.log("Socket disconnected:", socket.id);
   });
 });
+
+// if(process.env.NODE_ENV === "production") {
+//     app.use(express.static(path.join(__dirname, "../frontend/dist")));
+//     app.get("/*", (req, res, next) => {
+//       if (req.originalUrl.startsWith("/api")) return next(); // Skip API
+//       res.sendFile(path.join(frontendDistPath, "index.html"));
+//     });
+//   }
+
+//   app._router.stack
+//   .filter(r => r.route)
+//   .forEach(r => console.log(Object.keys(r.route.methods)[0].toUpperCase(), r.route.path));
+
 
 server.listen(PORT,()=>{
     console.log(`Server is running on PORT:${PORT}`);

@@ -164,7 +164,6 @@ async function getUserRooms(req, res) {
   try {
     const userId = req.user._id;
 
-    console.log("👀 Looking for rooms where:", userId);
 
     const rooms = await Room.find({
       $or: [

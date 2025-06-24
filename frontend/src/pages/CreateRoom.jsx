@@ -21,7 +21,7 @@ const CreateRoom = () => {
         setLoading(true);
         try {
             const res = await axiosInstance.post(
-                "/api/room/create",
+                "/room/create",
                 {
                     roomName,
                     language,

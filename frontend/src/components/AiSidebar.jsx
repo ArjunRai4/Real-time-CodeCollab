@@ -17,7 +17,7 @@ const AiSidebar = ({ onClose }) => {
 
     try {
       const res = await axiosInstance.post(
-        "/api/ai/chat",
+        "/ai/chat",
         { message: input },
         { withCredentials: true }
       );

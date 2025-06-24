@@ -32,7 +32,7 @@ const Login = () => {
 
         try {
         const res = await axiosInstance.post(
-            "/api/user/login",
+            "/user/login",
             formData,
             { withCredentials: true }
         );

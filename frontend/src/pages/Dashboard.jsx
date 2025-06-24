@@ -15,7 +15,7 @@ const Dashboard = () => {
     useEffect(()=>{
         async function fetchRooms(){
             try {
-                const res=await axiosInstance.get("/api/room/my-rooms",{
+                const res=await axiosInstance.get("/room/my-rooms",{
                     withCredentials:true,
                 });
                 setRooms(res.data.rooms);
@@ -61,7 +61,7 @@ const Dashboard = () => {
           {rooms.map((room) => (
             <Link
               key={room._id}
-              to={`/room/${room.roomId}`}
+              to={`/api/room/${room.roomId}`}
               className="bg-white p-4 rounded-xl shadow hover:shadow-md transition"
             >
               <h3 className="text-lg font-bold">{room.roomName}</h3>

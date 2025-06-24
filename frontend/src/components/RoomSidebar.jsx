@@ -10,7 +10,7 @@ const RoomSidebar = ({ participants, room, user }) => {
   const handleLeaveRoom = async () => {
     try {
       await axiosInstance.post(
-        "/api/room/leave",
+        "/room/leave",
         { roomId },
         { withCredentials: true }
       );
@@ -23,7 +23,7 @@ const RoomSidebar = ({ participants, room, user }) => {
   const handleCloseRoom = async () => {
     try {
       await axiosInstance.post(
-        "/api/room/close",
+        "/room/close",
         { roomId },
         { withCredentials: true }
       );

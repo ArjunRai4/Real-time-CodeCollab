@@ -34,7 +34,7 @@ const Signup = () => {
 
     try {
       const res = await axiosInstance.post(
-        "/api/user/signup",
+        "/user/signup",
         formData,
         { withCredentials: true }
       );
@@ -105,7 +105,7 @@ const Signup = () => {
 
         <p className="text-center text-sm text-gray-600 mt-4">
           Already have an account?{" "}
-          <Link to="/api/user/login" className="text-blue-600 hover:underline">
+          <Link to="/login" className="text-blue-600 hover:underline">
             Log in
           </Link>
         </p>

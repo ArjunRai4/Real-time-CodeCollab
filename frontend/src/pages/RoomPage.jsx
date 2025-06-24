@@ -24,7 +24,7 @@ const RoomPage = () => {
 
   const saveCodeToServer=async()=>{
     try {
-        await axiosInstance.patch(`/api/room/${roomId}/save`,
+        await axiosInstance.patch(`/room/${roomId}/save`,
             {code},
             {withCredentials:true}
         )
@@ -41,9 +41,13 @@ const RoomPage = () => {
   },[code]);
 
   useEffect(() => {
+    if (!roomId || roomId === ":") {
+      toast.error("Invalid room ID");
+      window.location.href = "/dashboard"; // or use navigate()
+    }
     async function fetchRoom() {
       try {
-        const res = await axiosInstance.get(`/api/room/${roomId}`, {
+        const res = await axiosInstance.get(`/room/${roomId}`, {
           withCredentials: true,
         });
         setRoom(res.data.room);
@@ -83,7 +87,7 @@ const RoomPage = () => {
       socket.off('code-update');
       socket.off('room-users');
     };
-  }, [socket, roomId, user, code]);
+  }, [socket, roomId, user]);
 
     const handleCodeChange = (newCode) => {
         setCode(newCode);

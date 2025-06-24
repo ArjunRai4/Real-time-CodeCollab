@@ -24,7 +24,7 @@ const io = new Server(server, {
 });
 
 app.use(cors({
-    origin: "http://localhost:5173", // Replace with your frontend URL
+    origin: "https://685a589fd86235419460ef9e--shiny-tiramisu-7e68c8.netlify.app/", // Replace with your frontend URL
     credentials: true, // This allows cookies to be sent with requests
 }));
 app.use(express.json());

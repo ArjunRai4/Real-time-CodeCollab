@@ -40,7 +40,7 @@ async function signup(req,res) {
         res.cookie("jwt",token,{
             maxAge:7*24*60*60*1000,
             httpOnly:true,  //prevents XSS attacks,
-            sameSite:"Strict",  //prevents CSRF attacks
+            sameSite:"None",  //prevents CSRF attacks
             secure:process.env.NODE_ENV==="production"
         })
 
@@ -75,7 +75,7 @@ async function login(req,res){
         res.cookie("jwt",token,{
             maxAge:7*24*60*60*1000,
             httpOnly:true,  //prevents XSS attacks,
-            sameSite:"Lax",  //prevents CSRF attacks
+            sameSite:"None",  //prevents CSRF attacks
             secure:process.env.NODE_ENV==="production"
         })
 

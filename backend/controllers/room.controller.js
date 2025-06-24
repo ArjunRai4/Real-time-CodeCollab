@@ -238,5 +238,22 @@ async function saveRoomCode(req,res){
     }
 }
 
+async function closeRoom(req, res) {
+  const { roomId } = req.body;
+  const userId = req.user._id;
 
-module.exports = { createRoom,joinRoom,leaveRoom,getRoomDetails,getUserRooms,saveCode,saveRoomCode };
+  const room = await Room.findOne({ roomId });
+  if (!room) return res.status(404).json({ message: "Room not found" });
+
+  if (room.owner.toString() !== userId.toString()) {
+    return res.status(403).json({ message: "Only the owner can close the room" });
+  }
+
+  await Room.deleteOne({ roomId });
+
+  res.status(200).json({ success: true, message: "Room closed successfully" });
+}
+
+
+
+module.exports = { createRoom,joinRoom,leaveRoom,getRoomDetails,getUserRooms,saveCode,saveRoomCode,closeRoom };

@@ -40,25 +40,25 @@ io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
 
   socket.on("join-room", ({ roomId, user }) => {
-  socket.join(roomId);
+    socket.join(roomId);
 
-  if (!onlineUsersInRoom[roomId]) {
-    onlineUsersInRoom[roomId] = [];
-  }
+    if (!onlineUsersInRoom[roomId]) {
+        onlineUsersInRoom[roomId] = [];
+    }
 
-  // Add socketId to user object
-  const userWithSocket = { ...user, socketId: socket.id };
+    // Add socketId to user object
+    const userWithSocket = { ...user, socketId: socket.id };
 
-  const alreadyJoined = onlineUsersInRoom[roomId].some(
-    (u) => u._id === user._id
-  );
+    const alreadyJoined = onlineUsersInRoom[roomId].some(
+        (u) => u._id === user._id
+    );
 
-  if (!alreadyJoined) {
-    onlineUsersInRoom[roomId].push(userWithSocket);
-  }
+    if (!alreadyJoined) {
+        onlineUsersInRoom[roomId].push(userWithSocket);
+    }
 
-  io.to(roomId).emit("room-users", onlineUsersInRoom[roomId]);
-});
+    io.to(roomId).emit("room-users", onlineUsersInRoom[roomId]);
+    });
 
 
     socket.on("leave-room", ({ roomId, userId }) => {

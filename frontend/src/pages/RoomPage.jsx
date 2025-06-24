@@ -9,15 +9,18 @@ import { Bot } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
 import { toast } from 'react-hot-toast';
+import VideoPanel from '../components/VideoPanel';
+import { useNavigate } from "react-router-dom";
 
 const RoomPage = () => {
+  const navigate = useNavigate();  
   const { roomId } = useParams();
   const [room, setRoom] = useState(null);
   const [loading, setLoading] = useState(true);
   const [code, setCode] = useState('');
   const [aiOpen, setAiOpen] = useState(false);
   const { user } = useAuth();
-  const socket = useSocket();
+  const {socket,callUser,startLocalStream } = useSocket();
   const [participants, setParticipants] = useState([]);
 
   const saveCodeToServer=async()=>{
@@ -58,6 +61,8 @@ const RoomPage = () => {
 
   useEffect(() => {
     if (!socket || !roomId || !user) return;
+
+    startLocalStream();
 
     socket.emit('join-room', {
       roomId,
@@ -141,14 +146,21 @@ const RoomPage = () => {
 
       {/* Main Content */}
       <div className="flex-1 overflow-hidden flex">
-        <RoomSidebar participants={participants} />
+        <RoomSidebar participants={participants} room={room} user={user}  />
 
-        <div className="flex-1 relative overflow-hidden">
-          <CodeEditor
+        <div className="flex-1 relative overflow-hidden flex flex-col">
+          <div className="flex-1">
+            <CodeEditor
             language={room.language}
             code={code}
             setCode={handleCodeChange}
-          />
+            />
+          </div>
+
+            {/* Video Panel at Bottom */}
+            <div className="border-t border-base-300 bg-base-100 p-2">
+                <VideoPanel participants={participants} />
+            </div>
 
           {/* AI Assistant Button */}
           <button

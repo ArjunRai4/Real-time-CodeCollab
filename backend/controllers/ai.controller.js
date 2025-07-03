@@ -1,30 +1,40 @@
-const express=require("express");
+const axios = require('axios');
+const express = require('express');
 
-const chatWithAI=async(req,res)=>{
-    const {message}=req.body;
+const chatWithAI = async (req, res) => {
+  const { message } = req.body;
 
-    if(!message){
-        return res.status(400).json({ message: "Message is required" });
-    }
+  if (!message) {
+    return res.status(400).json({ message: 'Message is required' });
+  }
 
-    try {
-        const dummyReplies = {
-        "how to reverse a string": "You can use JavaScript's `split`, `reverse`, and `join` methods.\n\n```js\nconst reversed = str.split('').reverse().join('');\n```",
-        "what is a promise": "A Promise is an object representing the eventual completion or failure of an async operation.\n\n```js\nnew Promise((resolve, reject) => {\n  // async work\n});\n```",
-        "default": "I'm a demo AI assistant. Ask me about JavaScript, React, or coding best practices!"
-        };
+  try {
+    const response = await axios.post(
+      'https://api.cohere.ai/v1/generate',
+      {
+        model: 'command-r-plus',
+        prompt: `
+You are a helpful coding assistant. Respond clearly and concisely to the following user message:
 
-        const matched = Object.keys(dummyReplies).find((key) =>
-        message.toLowerCase().includes(key)
-        );
+User: ${message}
+AI:`,
+        max_tokens: 200,
+        temperature: 0.6,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.COHERE_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-        const reply = dummyReplies[matched] || dummyReplies["default"];        
+    const reply = response.data.generations[0].text.trim();
+    res.status(200).json({ reply });
+  } catch (error) {
+    console.error('AI Chat Error:', error.response?.data || error.message);
+    res.status(500).json({ message: 'AI service failed' });
+  }
+};
 
-        res.status(200).json({ reply });
-    } catch (error) {
-        console.error("AI Chat Error:", error.response?.data || error.message);
-        res.status(500).json({ message: "AI service failed" });
-    }
-}
-
-module.exports={chatWithAI};
+module.exports = { chatWithAI };
